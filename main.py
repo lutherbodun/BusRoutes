@@ -44,6 +44,17 @@ heuristic = {
     'g': 0
 }
 
+
+population_density = {
+    's': 1,
+    'a': 2,
+    'b': 9,
+    'c': 5,
+    'd': 3,
+    'e': 4,
+    'g': 0
+}
+
 path, traversal_path, path_cost = a_star_search_with_cost_and_traversal(graph, heuristic, 's', 'g')
 print("A* Path:", path)
 print("Traversal Path:", traversal_path)
