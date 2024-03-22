@@ -1,61 +1,43 @@
+import json
 from queue import PriorityQueue
 
-def a_star_search_with_cost_and_traversal(graph, heuristic, start, goal):
+# Read data from JSON file
+with open('read_from_js.json', 'r') as file:
+    data = json.load(file)
+
+# Assign values from JSON
+graph = data["graph"]
+heuristic = data["heuristic"]
+population_density = data["population_density"]
+
+def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
-    open_set.put((heuristic[start], 0, start, [start]))
+    # Initialize the open set with the start node, incorporating population density into the priority calculation
+    open_set.put((0, 0, start, [start], 0))  # Last zero is the initial cumulative population density
     cost_so_far = {start: 0}
-    traversal_path = []  # tracking the order of node exploration
+    population_so_far = {start: 0}  # Start with zero and accumulate population density along the path
 
     while not open_set.empty():
-        _, current_cost, current, path = open_set.get()
-
-        if current not in traversal_path:
-            traversal_path.append(current)
+        _, current_cost, current, path, current_population = open_set.get()
 
         if current == goal:
-            return path, traversal_path, current_cost  # return path, traversal path, and total path cost
+            # Return the path, the traversal order, total path cost, and total population along the path
+            return path, current_cost, current_population
 
-        for next, next_cost in graph.get(current, []):
-            new_cost = current_cost + next_cost
-            if next not in cost_so_far or new_cost < cost_so_far[next]:
-                cost_so_far[next] = new_cost
-                priority = new_cost + heuristic[next]
-                open_set.put((priority, new_cost, next, path + [next]))
-    
-    return "Path not found", traversal_path, 0
+        for next_node, travel_cost in graph.get(current, []):
+            new_cost = current_cost + travel_cost
+            new_population = current_population + population_density[next_node]  # Accumulate population density
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+                cost_so_far[next_node] = new_cost
+                population_so_far[next_node] = new_population
+                # Adjust the priority calculation to include population density
+                priority = new_cost + heuristic[next_node] - new_population  # Example adjustment
+                open_set.put((priority, new_cost, next_node, path + [next_node], new_population))
 
-graph = {
-    's': [('a', 2), ('b', 3)],
-    'a': [('d', 4)],
-    'c': [('s', 1), ('e', 1)],
-    'd': [('g', 7)],
-    'b': [('d', 5), ('e', 1)],
-    'e': [('d', 3), ('g', 4)],
-    'g': []  # Goal node
-}
+    return "Path not found", 0, 0
 
-heuristic = {
-    's': 10,
-    'a': 8,
-    'b': 6,
-    'c': 5,
-    'd': 7,
-    'e': 4,
-    'g': 0
-}
-
-
-population_density = {
-    's': 1,
-    'a': 2,
-    'b': 9,
-    'c': 5,
-    'd': 3,
-    'e': 4,
-    'g': 0
-}
-
-path, traversal_path, path_cost = a_star_search_with_cost_and_traversal(graph, heuristic, 's', 'g')
-print("A* Path:", path)
-print("Traversal Path:", traversal_path)
+# Execute the A* search with consideration for population density
+path, path_cost, total_population = a_star_search_with_population(graph, heuristic, population_density, 's', 'g')
+print("A* Path considering population:", path)
 print("Path Cost:", path_cost)
+print("Total Population along path:", total_population)
