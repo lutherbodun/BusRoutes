@@ -1,92 +1,90 @@
-from queue import PriorityQueue
-# graph = {
-#     's': [('a', 2), ('b', 3)],
-#     'a': [('c', 2), ('d', 3)],
-#     'b': [('d', 1), ('e', 4)],
-#     'c': [('g', 4)],
-#     'd': [('g', 2)],
-#     'e': [('g', 1)],
-#     'g': []
-# }
-
-# heuristic = {
-#     's': 7,
-#     'a': 6,
-#     'b': 2,
-#     'c': 4,
-#     'd': 2,
-#     'e': 1,
-#     'g': 0
-# }
-
-# population_density = {
-#     's': 1,
-#     'a': 2,
-#     'b': 2,
-#     'c': 5,
-#     'd': 2,
-#     'e': 3,
-#     'g': 0
-# }
 import json
 from queue import PriorityQueue
+import matplotlib.pyplot as plt
+import networkx as nx
 
-# Read data from JSON file
-with open('read_from_js.json', 'r') as file:
-    data = json.load(file)
+# Inline JSON data as an example
+data = {
+    "graph": {
+      "s": [["a", 2], ["b", 3]],
+      "a": [["d", 4]],
+      "c": [["s", 1], ["e", 1]],
+      "d": [["g", 7]],
+      "b": [["d", 5], ["e", 1]],
+      "e": [["d", 3], ["g", 4]],
+      "g": []
+    },
+    "heuristic": {
+      "s": 10,
+      "a": 8,
+      "b": 6,
+      "c": 5,
+      "d": 7,
+      "e": 4,
+      "g": 0
+    },
+    "population_density": {
+      "s": 1,
+      "a": 2,
+      "b": 1,
+      "c": 5,
+      "d": 3,
+      "e": 2,
+      "g": 2
+    }
+}
 
-# Assign values from JSON
-graph = data["graph"]
-heuristic = data["heuristic"]
-population_density = data["population_density"]
-
-def a_star_search_with_population_ratio(graph, heuristic, population_density, start, goal):
+# A* search algorithm with population density consideration
+def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
-    # Initialize with the start node; priority now considers the population density to path cost ratio
-    # The ratio is initialized to be as high as possible (using negative for sorting in priority queue)
-    open_set.put((-float('inf'), 0, start, [start], 0))  # Initial population density is 0
+    open_set.put((0, 0, start, [start], 0))
     cost_so_far = {start: 0}
-    best_ratio_so_far = {start: -float('inf')}  # Using negative for best ratio initialization
+    population_so_far = {start: 0}
 
     while not open_set.empty():
-        current_ratio, current_cost, current, path, current_population = open_set.get()
+        _, current_cost, current, path, current_population = open_set.get()
 
         if current == goal:
-            return path, current_cost, current_population / current_cost if current_cost > 0 else float('inf')
+            return path, current_cost, current_population
 
         for next_node, travel_cost in graph.get(current, []):
             new_cost = current_cost + travel_cost
             new_population = current_population + population_density[next_node]
-            new_ratio = -new_population / new_cost if new_cost > 0 else -float('inf')  # Maintain negative for sorting
-            
-            if next_node not in cost_so_far or new_ratio > best_ratio_so_far[next_node]:
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
                 cost_so_far[next_node] = new_cost
-                best_ratio_so_far[next_node] = new_ratio
-                priority = (new_ratio, new_cost + heuristic[next_node], next_node, path + [next_node], new_population)
-                open_set.put(priority)
+                population_so_far[next_node] = new_population
+                priority = new_cost + heuristic[next_node] - new_population
+                open_set.put((priority, new_cost, next_node, path + [next_node], new_population))
 
-    return "Path not found", 0, float('inf')
+    return "Path not found", 0, 0
 
-# Load your graph, heuristic, and population_density from 'read_from_js.json' as before
-# graph, heuristic, population_density = load_your_data()
+# Visualization function
+def visualize_path(graph, path, population_density):
+    plt.figure(figsize=(12, 8))
+    G = nx.DiGraph()
+    for node, edges in graph.items():
+        for edge in edges:
+            G.add_edge(node, edge[0], weight=edge[1])
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=False, node_color='skyblue', edge_color='gray', width=1, arrowsize=20, alpha=0.5)
+    path_edges = list(zip(path, path[1:]))
+    nx.draw_networkx_nodes(G, pos, nodelist=path, node_color='lightgreen', node_size=500)
+    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='green', width=3, arrowsize=30)
+    node_labels = {node: node for node in G.nodes()}
+    population_labels = {node: f"{pop}" for node, pop in population_density.items()}
+    nx.draw_networkx_labels(G, pos, labels=node_labels, font_size=14, font_weight='bold')
+    nx.draw_networkx_labels(G, pos, labels=population_labels, font_size=10, verticalalignment='bottom')
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
+    plt.title('A* Path considering population density', size=15)
+    plt.axis('off')
+    plt.show()
 
-# Execute the modified A* search
-path, path_cost, population_ratio = a_star_search_with_population_ratio(graph, heuristic, population_density, 's', 'g')
-print("Optimal Path considering population density to path cost ratio:", path)
+# Main execution
+path, path_cost, total_population = a_star_search_with_population(data['graph'], data['heuristic'], data['population_density'], 's', 'g')
+print("A* Path considering population:", path)
 print("Path Cost:", path_cost)
-print("Population Density to Path Cost Ratio:", -population_ratio)  # Negating ratio for correct sign
+print("Total Population along path:", total_population)
 
-
-
-import turtle
-
-# Setup the window
-wn = turtle.Screen()
-wn.bgcolor("white")
-wn.title("A* Pathfinding with Population Ratio")
-wn.setup(width=700, height=700)
-
-# Create a turtle for drawing the grid and paths
-drawer = turtle.Turtle()
-drawer.speed(0)  # fastest drawing speed
-drawer.hideturtle()
+# Visualize the result
+visualize_path(data['graph'], path, data['population_density'])

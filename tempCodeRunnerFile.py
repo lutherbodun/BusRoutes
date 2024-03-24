@@ -1,71 +1,121 @@
+import turtle
 from queue import PriorityQueue
-import json
 
-def a_star_search_with_time_cost_and_traversal(graph, heuristic, start, goal):
+# Inline JSON data as an example
+data = {
+    "graph": {
+        "s": [["a", 2], ["b", 3]],
+        "a": [["d", 4]],
+        "c": [["s", 1], ["e", 1]],
+        "d": [["g", 7]],
+        "b": [["d", 5], ["e", 1]],
+        "e": [["d", 3], ["g", 4]],
+        "g": []
+    },
+    "heuristic": {
+        "s": 10,
+        "a": 8,
+        "b": 6,
+        "c": 5,
+        "d": 7,
+        "e": 4,
+        "g": 0
+    },
+    "population_density": {
+        "s": 1,
+        "a": 2,
+        "b": 1,
+        "c": 5,
+        "d": 3,
+        "e": 2,
+        "g": 2
+    }
+}
+
+def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
-    # Initial node has a heuristic value, cost of 0, the start node, an empty path, and time cost of 0
-    open_set.put((heuristic[start], 0, start, [start], 0))  # Added initial time cost as 0
+    open_set.put((0, start, [start], 0))
     cost_so_far = {start: 0}
-    time_so_far = {start: 0}  # Tracks time cost so far
-    traversal_path = []  # Tracking the order of node exploration
+    population_so_far = {start: 0}
 
     while not open_set.empty():
-        _, current_cost, current, path, current_time_cost = open_set.get()
-
-        if current not in traversal_path:
-            traversal_path.append(current)
+        _, current, path, current_population = open_set.get()
 
         if current == goal:
-            return path, traversal_path, current_cost, current_time_cost
+            yield path, cost_so_far[current], population_so_far[current]
 
-        for next, next_info in graph.get(current, []):
-            next_cost, next_time_cost = next_info
-            new_cost = current_cost + next_cost
-            total_time_cost = current_time_cost + next_time_cost  # Calculate total time spent
-            if next not in cost_so_far or new_cost < cost_so_far[next]:
-                cost_so_far[next] = new_cost
-                time_so_far[next] = total_time_cost
-                priority = new_cost + heuristic[next]
-                open_set.put((priority, new_cost, next, path + [next], total_time_cost))
-    
-    return "Path not found", traversal_path, 0, 0
+        for next_node, travel_cost in graph.get(current, []):
+            new_cost = cost_so_far[current] + travel_cost
+            new_population = current_population + population_density[next_node]
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+                cost_so_far[next_node] = new_cost
+                population_so_far[next_node] = new_population
+                priority = new_cost + heuristic[next_node] - new_population
+                open_set.put((priority, next_node, path + [next_node], new_population))
 
-# Example graph with added average time spent at each node and coordinates
-graph = {
-    's': [('a', (2, 3)), ('b', (3, 2))],  # (cost, time)
-    'a': [('d', (4, 5))],
-    'b': [('d', (5, 2)), ('e', (1, 3))],
-    'd': [('g', (7, 8))],
-    'e': [('g', (4, 2))],
-    'g': []  # Goal node
+# Define node positions for turtle graphics (adjusted to fit your screen and look good)
+node_positions = {
+    "s": (-200, 100),
+    "a": (-100, 150),
+    "b": (-100, 50),
+    "c": (0, 0),
+    "d": (100, 100),
+    "e": (50, -50),
+    "g": (200, 0)
 }
 
-heuristic = {
-    's': 10,
-    'a': 8,
-    'b': 6,
-    'd': 7,
-    'e': 4,
-    'g': 0
-}
+# Turtle setup
+turtle.setup(width=600, height=600)
+t = turtle.Turtle()
+t.speed('fastest')
 
-path, traversal_path, path_cost, total_time_cost = a_star_search_with_time_cost_and_traversal(graph, heuristic, 's', 'g')
-print("A* Path:", path)
-print("Traversal Path:", traversal_path)
+# Function to draw nodes as circles with labels
+def draw_nodes(t, node_positions):
+    for node, (x, y) in node_positions.items():
+        t.penup()
+        t.goto(x, y - 20)  # Position the turtle below the node center
+        t.pendown()
+        t.circle(20)  # Draw a circle for the node
+        t.penup()
+        t.goto(x, y - 5)  # Position the turtle to write the label
+        t.write(node, align="center", font=("Arial", 12, "bold"))
+
+# Function to draw edges as lines between nodes
+def draw_edges(t, graph, node_positions):
+    for node, edges in graph.items():
+        for edge, _ in edges:
+            t.penup()
+            t.goto(node_positions[node])
+            t.pendown()
+            t.goto(node_positions[edge])
+
+# Main execution
+screen = turtle.Screen()
+screen.title("A* Path Considering Population Density")
+draw_nodes(t, node_positions)
+draw_edges(t, data['graph'], node_positions)
+
+# Perform A* search
+search_results = a_star_search_with_population(data['graph'], data['heuristic'], data['population_density'], 's', 'g')
+
+# Draw the final path
+path, path_cost, total_population = next(search_results)
+print("A* Path considering population:", path)
 print("Path Cost:", path_cost)
-print("Total Time Cost:", total_time_cost)
+print("Total Population along path:", total_population)
 
-# Sample JSON data generation
-node_data = {
-    's': {'coordinates': {'lon': -79.39, 'lat': 43.70}, 'average_time': 3, 'population_density': 1},
-    'a': {'coordinates': {'lon': -79.38, 'lat': 43.71}, 'average_time': 5, 'population_density': 2},
-    'b': {'coordinates': {'lon': -79.37, 'lat': 43.72}, 'average_time': 2, 'population_density': 9},
-    'd': {'coordinates': {'lon': -79.36, 'lat': 43.73}, 'average_time': 8, 'population_density': 3},
-    'e': {'coordinates': {'lon': -79.35, 'lat': 43.74}, 'average_time': 2, 'population_density': 4},
-    'g': {'coordinates': {'lon': -79.34, 'lat': 43.75}, 'average_time': 0, 'population_density': 0},
-}
+# Function to draw the final path with a different color
+def draw_final_path(t, path, node_positions):
+    t.pencolor('green')
+    t.pensize(3)
+    for i in range(len(path) - 1):
+        t.penup()
+        t.goto(node_positions[path[i]])
+        t.pendown()
+        t.goto(node_positions[path[i+1]])
 
-with open('node_data.json', 'w') as json_file:
-    json.dump(node_data, json_file, indent=4)
+draw_final_path(t, path, node_positions)
 
-print("JSON data for nodes saved to 'node_data.json'.")
+# Hide the turtle cursor and finish
+t.hideturtle()
+turtle.done()
