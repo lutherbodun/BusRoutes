@@ -67,7 +67,7 @@ node_positions = {
 # Turtle setup
 turtle.setup(width=600, height=600)
 t = turtle.Turtle()
-t.speed('fastest')
+t.speed('fast')
 
 # Function to draw nodes as circles with labels
 def draw_nodes(t, node_positions):
