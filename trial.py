@@ -99,11 +99,11 @@ draw_edges_with_costs(t, data['graph'], node_positions)
 
 # Perform A* search
 search_results = a_star_search_with_population(
-    data['graph'], data['heuristic'], data['population_density'], 'Trinity Bellwoods Park', 'Queen Station')
+    data['graph'], data['heuristic'], data['population_density'], 'source', 'goal')
 
 # Execute the modified A* search
 path, path_cost, total_population_ratio = a_star_search_with_population(
-    graph, heuristic, population_density, 'Trinity Bellwoods Park', 'Queen Station')
+    graph, heuristic, population_density, 'source', 'goal')
 print("A* Path considering population to cost ratio:", path)
 print("Path Cost:", path_cost)
 # Define node positions for turtle graphics (adjusted to fit your screen and look good)

@@ -1,37 +1,36 @@
 import json
 
-# Load the graph data from a JSON file
-with open('temp.json', 'r') as file:
-    data = json.load(file)
+def update_node_positions(json_data):
+    # Example logic to convert coordinates to positions
+    # This can be replaced with any logic you need
+    min_lon = min(lat_lon["longitude"] for lat_lon in json_data["coordinates"].values())
+    max_lon = max(lat_lon["longitude"] for lat_lon in json_data["coordinates"].values())
+    min_lat = min(lat_lon["latitude"] for lat_lon in json_data["coordinates"].values())
+    max_lat = max(lat_lon["latitude"] for lat_lon in json_data["coordinates"].values())
 
-graph = data['graph']
+    width = 600  # Width of the area to project the coordinates onto
+    height = 400  # Height of the area
 
-# Initialize positions with the source node and a set for visited nodes
-positions = {'source': (0, 0)}
-visited = {'source'}
+    for node, coord in json_data["coordinates"].items():
+        # Normalize the coordinates and scale to the drawing area
+        x = (coord["longitude"] - min_lon) / (max_lon - min_lon) * width
+        y = (coord["latitude"] - min_lat) / (max_lat - min_lat) * height
+        # Update the node_positions with new values
+        json_data["node_positions"][node] = [int(x), int(height - y)]  # Flip y for graphical representation
 
-# Function to place nodes
-def place_nodes(node, x_offset=100, y_offset=100, level=0):
-    if node not in graph:
-        return
+def main():
+    json_file_path = 'temp.json'
     
-    for adj_node, weight in graph[node]:
-        if adj_node not in visited:
-            visited.add(adj_node)
-            x = positions[node][0] + (level + 1) * x_offset * weight
-            # Alternates placement up and down from the source line
-            y = positions[node][1] + ((level % 2) * 2 - 1) * y_offset * weight
-            positions[adj_node] = (x, y)
-            place_nodes(adj_node, x_offset, y_offset, level + 1)
+    # Load the JSON data from the file
+    with open(json_file_path, 'r') as file:
+        json_data = json.load(file)
+    
+    # Update the node positions based on the coordinates
+    update_node_positions(json_data)
+    
+    # Write the updated JSON data back to the file
+    with open(json_file_path, 'w') as file:
+        json.dump(json_data, file, indent=4)
 
-# Start placing nodes from the source
-place_nodes('source')
-
-# Update the original data with new positions
-data['node_positions'] = {node: list(pos) for node, pos in positions.items()}
-
-# Write the updated data back to the JSON file
-with open('updated_graph_data.json', 'w') as file:
-    json.dump(data, file, indent=4)
-
-print("Updated node positions have been saved to 'updated_graph_data.json'.")
+if __name__ == "__main__":
+    main()
