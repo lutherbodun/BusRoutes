@@ -1,90 +1,135 @@
+import turtle
 import json
+import auxi
 from queue import PriorityQueue
-import matplotlib.pyplot as plt
-import networkx as nx
+
+
+with open('pass.py', 'r') as file:
+    exec(file.read())
 
 # Inline JSON data as an example
-data = {
-    "graph": {
-      "s": [["a", 2], ["b", 3]],
-      "a": [["d", 4]],
-      "c": [["s", 1], ["e", 1]],
-      "d": [["g", 7]],
-      "b": [["d", 5], ["e", 1]],
-      "e": [["d", 3], ["g", 4]],
-      "g": []
-    },
-    "heuristic": {
-      "s": 10,
-      "a": 8,
-      "b": 6,
-      "c": 5,
-      "d": 7,
-      "e": 4,
-      "g": 0
-    },
-    "population_density": {
-      "s": 1,
-      "a": 2,
-      "b": 1,
-      "c": 5,
-      "d": 3,
-      "e": 2,
-      "g": 2
-    }
-}
+with open('temp.json', 'r') as file:
+    data = json.load(file)
 
-# A* search algorithm with population density consideration
+# Replace this with reading from a file in actual implementation
+# with open('read_from_js.json', 'r') as file:
+#     data = json.load(file)
+
+graph = data["graph"]
+heuristic = data["heuristic"]
+population_density = data["population_density"]
+node_positions = data.get("node_positions", {})
+
+
 def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
-    open_set.put((0, 0, start, [start], 0))
+    # Priority now only for initialization, path, and cumulative population density
+    open_set.put((0, start, [start], 0))
     cost_so_far = {start: 0}
-    population_so_far = {start: 0}
+    best_ratio_so_far = {start: 0}
 
     while not open_set.empty():
-        _, current_cost, current, path, current_population = open_set.get()
+        _, current, path, current_population = open_set.get()
 
         if current == goal:
-            return path, current_cost, current_population
+            return path, cost_so_far[current], current_population / cost_so_far[current]
 
         for next_node, travel_cost in graph.get(current, []):
-            new_cost = current_cost + travel_cost
+            new_cost = cost_so_far[current] + travel_cost
             new_population = current_population + population_density[next_node]
+            new_ratio = new_population / new_cost if new_cost else float('inf')
+
             if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
                 cost_so_far[next_node] = new_cost
-                population_so_far[next_node] = new_population
-                priority = new_cost + heuristic[next_node] - new_population
-                open_set.put((priority, new_cost, next_node, path + [next_node], new_population))
+                best_ratio_so_far[next_node] = new_ratio
+                priority = -new_ratio  # We negate the ratio to turn max-heap behavior into min-heap
+                open_set.put((priority, next_node, path +
+                             [next_node], new_population))
 
     return "Path not found", 0, 0
 
-# Visualization function
-def visualize_path(graph, path, population_density):
-    plt.figure(figsize=(12, 8))
-    G = nx.DiGraph()
+
+# Assuming turtle setup and draw functions are defined as before
+# Turtle setup
+turtle.setup(width=600, height=600)
+t = turtle.Turtle()
+t.speed('fast')
+
+# Function to draw nodes as circles with labels
+def draw_nodes(t, node_positions):
+    for node, (x, y) in node_positions.items():
+        t.penup()
+        t.goto(x, y - 20)  # Position the turtle below the node center
+        t.pendown()
+        t.circle(30)  # Draw a circle for the node
+        t.penup()
+        t.goto(x, y - 5)  # Position the turtle to write the label
+        t.write(node, align="center", font=("Arial", 16, "bold"))
+
+# Function to draw edges as lines between nodes
+
+
+def draw_edges_with_costs(t, graph, node_positions):
     for node, edges in graph.items():
-        for edge in edges:
-            G.add_edge(node, edge[0], weight=edge[1])
-    pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=False, node_color='skyblue', edge_color='gray', width=1, arrowsize=20, alpha=0.5)
-    path_edges = list(zip(path, path[1:]))
-    nx.draw_networkx_nodes(G, pos, nodelist=path, node_color='lightgreen', node_size=500)
-    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='green', width=3, arrowsize=30)
-    node_labels = {node: node for node in G.nodes()}
-    population_labels = {node: f"{pop}" for node, pop in population_density.items()}
-    nx.draw_networkx_labels(G, pos, labels=node_labels, font_size=14, font_weight='bold')
-    nx.draw_networkx_labels(G, pos, labels=population_labels, font_size=10, verticalalignment='bottom')
-    edge_labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
-    plt.title('A* Path considering population density', size=15)
-    plt.axis('off')
-    plt.show()
+        for edge, cost in edges:
+            # Calculate the midpoint for the cost label
+            start_pos = node_positions[node]
+            end_pos = node_positions[edge]
+            midpoint = ((start_pos[0] + end_pos[0]) / 2, (start_pos[1] + end_pos[1]) / 2)
+            
+            # Draw the edge
+            t.penup()
+            t.goto(start_pos)
+            t.pendown()
+            t.goto(end_pos)
+            
+            # Draw the cost label near the midpoint in bold
+            t.penup()
+            t.goto(midpoint[0], midpoint[1] - 10)  # Adjust as needed for visibility
+            t.pendown()
+            t.write(str(cost), align="center", font=("Arial", 8, "bold"))  # Font style set to bold
+
+
 
 # Main execution
-path, path_cost, total_population = a_star_search_with_population(data['graph'], data['heuristic'], data['population_density'], 's', 'g')
-print("A* Path considering population:", path)
-print("Path Cost:", path_cost)
-print("Total Population along path:", total_population)
+screen = turtle.Screen()
+screen.title("A* Path Considering Population Density")
+draw_nodes(t, node_positions)
+draw_edges_with_costs(t, data['graph'], node_positions)
 
-# Visualize the result
-visualize_path(data['graph'], path, data['population_density'])
+# Perform A* search
+search_results = a_star_search_with_population(
+    data['graph'], data['heuristic'], data['population_density'], 'Trinity Bellwoods Park', 'Queen Station')
+
+# Execute the modified A* search
+path, path_cost, total_population_ratio = a_star_search_with_population(
+    graph, heuristic, population_density, 'Trinity Bellwoods Park', 'Queen Station')
+print("A* Path considering population to cost ratio:", path)
+print("Path Cost:", path_cost)
+# Define node positions for turtle graphics (adjusted to fit your screen and look good)
+print("Population to Cost Ratio along path:", total_population_ratio)
+
+# # Draw the final path
+# path, path_cost, total_population = next(search_results)
+# print("A* Path considering population:", path)
+# print("Path Cost:", path_cost)
+# print("Total Population along path:", total_population)
+
+# Function to draw the final path with a different color
+
+
+def draw_final_path(t, path, node_positions):
+    t.pencolor('green')
+    t.pensize(3)
+    for i in range(len(path) - 1):
+        t.penup()
+        t.goto(node_positions[path[i]])
+        t.pendown()
+        t.goto(node_positions[path[i+1]])
+
+
+draw_final_path(t, path, node_positions)
+
+# Hide the turtle cursor and finish
+t.hideturtle()
+turtle.done()
