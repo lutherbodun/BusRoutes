@@ -64,46 +64,33 @@ def draw_nodes(t, node_positions):
         t.circle(30)  # Draw a circle for the node
         t.penup()
         t.goto(x, y - 5)  # Position the turtle to write the label
-        t.write(node, align="center", font=("Arial", 16, "bold"))
+        t.write(node, align="center", font=("Arial", 12, "bold"))
 
 # Function to draw edges as lines between nodes
 
 
-def draw_edges_with_costs(t, graph, node_positions):
+def draw_edges(t, graph, node_positions):
     for node, edges in graph.items():
-        for edge, cost in edges:
-            # Calculate the midpoint for the cost label
-            start_pos = node_positions[node]
-            end_pos = node_positions[edge]
-            midpoint = ((start_pos[0] + end_pos[0]) / 2, (start_pos[1] + end_pos[1]) / 2)
-            
-            # Draw the edge
+        for edge, _ in edges:
             t.penup()
-            t.goto(start_pos)
+            t.goto(node_positions[node])
             t.pendown()
-            t.goto(end_pos)
-            
-            # Draw the cost label near the midpoint in bold
-            t.penup()
-            t.goto(midpoint[0], midpoint[1] - 10)  # Adjust as needed for visibility
-            t.pendown()
-            t.write(str(cost), align="center", font=("Arial", 8, "bold"))  # Font style set to bold
-
+            t.goto(node_positions[edge])
 
 
 # Main execution
 screen = turtle.Screen()
 screen.title("A* Path Considering Population Density")
 draw_nodes(t, node_positions)
-draw_edges_with_costs(t, data['graph'], node_positions)
+draw_edges(t, data['graph'], node_positions)
 
 # Perform A* search
 search_results = a_star_search_with_population(
-    data['graph'], data['heuristic'], data['population_density'], 'source', 'goal')
+    data['graph'], data['heuristic'], data['population_density'], 'source', 'g')
 
 # Execute the modified A* search
 path, path_cost, total_population_ratio = a_star_search_with_population(
-    graph, heuristic, population_density, 'source', 'goal')
+    graph, heuristic, population_density, 'source', 'g')
 print("A* Path considering population to cost ratio:", path)
 print("Path Cost:", path_cost)
 # Define node positions for turtle graphics (adjusted to fit your screen and look good)

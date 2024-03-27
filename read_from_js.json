@@ -1,133 +1,133 @@
 {
     "graph": {
-        "s": [
+        "source": [
             [
-                "a",
+                "Antarctica",
                 2
             ],
             [
-                "b",
+                "Bahrain",
                 3
             ]
         ],
-        "a": [
+        "Antarctica": [
             [
-                "d",
+                "Delhi",
                 4
             ]
         ],
-        "c": [
+        "Chennai": [
             [
-                "s",
+                "source",
                 1
             ],
             [
-                "e",
+                "Ecuador",
                 1
             ]
         ],
-        "d": [
+        "Delhi": [
             [
-                "g",
+                "goal",
                 7
             ]
         ],
-        "b": [
+        "Bahrain": [
             [
-                "d",
+                "Delhi",
                 5
             ],
             [
-                "e",
+                "Ecuador",
                 1
             ]
         ],
-        "e": [
+        "Ecuador": [
             [
-                "d",
+                "Delhi",
                 3
             ],
             [
-                "g",
+                "goal",
                 4
             ]
         ],
-        "g": []
+        "goal": []
     },
     "heuristic": {
-        "s": 10,
-        "a": 8,
-        "b": 6,
-        "c": 5,
-        "d": 7,
-        "e": 4,
-        "g": 0
+        "source": 10,
+        "Antarctica": 8,
+        "Bahrain": 6,
+        "Chennai": 5,
+        "Delhi": 7,
+        "Ecuador": 4,
+        "goal": 0
     },
     "population_density": {
-        "s": 1,
-        "a": 2,
-        "b": 1,
-        "c": 5,
-        "d": 3,
-        "e": 2,
-        "g": 2
+        "source": 1,
+        "Antarctica": 2,
+        "Bahrain": 1,
+        "Chennai": 5,
+        "Delhi": 3,
+        "Ecuador": 2,
+        "goal": 2
     },
     "coordinates": {
-        "s": {
+        "source": {
             "longitude": -75.343,
             "latitude": 39.984
         },
-        "a": {
+        "Antarctica": {
             "longitude": -75.543,
             "latitude": 39.123
         },
-        "b": {
+        "Bahrain": {
             "longitude": -75.234,
             "latitude": 40.123
         },
-        "c": {
+        "Chennai": {
             "longitude": -75.875,
             "latitude": 38.987
         },
-        "d": {
+        "Delhi": {
             "longitude": -75.564,
             "latitude": 39.345
         },
-        "e": {
+        "Ecuador": {
             "longitude": -75.432,
             "latitude": 39.876
         },
-        "g": {
+        "goal": {
             "longitude": -75.678,
             "latitude": 40.456
         }
     },
     "node_positions": {
-        "s": [
+        "source": [
             200.0,
             0.0
         ],
-        "a": [
+        "Antarctica": [
             124.69796037174672,
             156.36629649360597
         ],
-        "c": [
+        "Chennai": [
             -44.50418679126287,
             194.98558243636472
         ],
-        "d": [
+        "Delhi": [
             -180.19377358048382,
             86.77674782351164
         ],
-        "b": [
+        "Bahrain": [
             -180.19377358048382,
             -86.7767478235116
         ],
-        "e": [
+        "Ecuador": [
             -44.50418679126274,
             -194.98558243636475
         ],
-        "g": [
+        "goal": [
             124.69796037174667,
             -156.36629649360597
         ]
