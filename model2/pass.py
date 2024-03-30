@@ -2,7 +2,12 @@ import json
 import math
 
 def euclidean_distance(coord1, coord2):
-    return math.sqrt((coord1["longitude"] - coord2["longitude"])**2 + (coord1["latitude"] - coord2["latitude"])**2)
+    # Calculate the Euclidean distance and scale it as if it's in kilometers
+    # This scaling is arbitrary and should be adjusted based on your actual data's scale
+    scale_factor = 100000
+    distance = math.sqrt((coord1["longitude"] - coord2["longitude"])**2 + (coord1["latitude"] - coord2["latitude"])**2)
+    scaled_distance = round(distance * scale_factor, 2)
+    return scaled_distance
 
 def generate_graph_adjacency_list(coordinates):
     adj_list = {}
@@ -15,6 +20,11 @@ def generate_graph_adjacency_list(coordinates):
                 adj_list[node_a].append((node_b, distance))
     return adj_list
 
+def adjust_node_positions(node_positions):
+    # Here we adjust the node positions directly based on your existing logic
+    # For visualization on a screen, you would likely need to further adapt this
+    return {node: [round(pos[0], 2), round(pos[1], 2)] for node, pos in node_positions.items()}
+
 # Load the existing data from the JSON file
 with open('temp.json', 'r') as file:
     data = json.load(file)
@@ -22,32 +32,13 @@ with open('temp.json', 'r') as file:
 # Generate graph adjacency list based on coordinates
 coordinates = data["coordinates"]
 graph_adj_list = generate_graph_adjacency_list(coordinates)
-
-# Update the graph in the data with the generated adjacency list
 data["graph"] = graph_adj_list
 
-node_keys = list(data["graph"].keys())
-
-# Number of nodes
-N = len(node_keys)
-
-# Calculate positions (arrange nodes in a circle for visualization)
-radius = 200  # Radius of the circle on which nodes will be positioned
-center_x, center_y = 0, 0  # Center of the circle
-angle = 360 / N  # Angle between nodes
-
-node_positions = {}
-for i, node in enumerate(node_keys):
-    theta = math.radians(angle * i)
-    x = center_x + radius * math.cos(theta)
-    y = center_y + radius * math.sin(theta)
-    node_positions[node] = [x, y]
-
-# Update the JSON data with the calculated node positions
-data["node_positions"] = node_positions
+# Adjust node positions for visualization
+data["node_positions"] = adjust_node_positions(data["node_positions"])
 
 # Save the updated data back to the JSON file
 with open('temp.json', 'w') as file:
     json.dump(data, file, indent=4)
 
-print("Graph adjacency list and node positions added to JSON file successfully.")
+print("Graph adjacency list and node positions updated and saved to JSON file successfully.")

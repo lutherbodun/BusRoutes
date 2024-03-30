@@ -8,7 +8,7 @@ with open('auxi.py', 'r') as file:
     exec(file.read())
 
 # Inline JSON data as an example
-with open('read_js.json', 'r') as file:
+with open('read_from_js.json', 'r') as file:
     data = json.load(file)
 
 # Replace this with reading from a file in actual implementation
@@ -87,7 +87,7 @@ def draw_edges_with_costs(t, graph, node_positions):
             t.penup()
             t.goto(midpoint[0], midpoint[1] - 10)  # Adjust as needed for visibility
             t.pendown()
-            t.write(str(cost), align="center", font=("Arial", 12, "bold"))  # Font style set to bold
+            t.write(str(cost), align="center", font=("Arial", 8, "bold"))  # Font style set to bold
 
 
 

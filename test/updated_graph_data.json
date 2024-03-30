@@ -3,57 +3,33 @@
         "Trinity Bellwoods Park": [
             [
                 "Osgoode Station",
-                2.76
-            ],
-            [
-                "Eaton Centre",
-                3.45
-            ],
-            [
-                "Queen Station",
-                3.56
+                5
             ]
         ],
         "Osgoode Station": [
             [
-                "Trinity Bellwoods Park",
-                2.76
-            ],
-            [
                 "Eaton Centre",
-                0.72
+                4
             ],
             [
-                "Queen Station",
-                0.8
+                "Trinity Bellwoods Park",
+                5
             ]
         ],
         "Eaton Centre": [
             [
-                "Trinity Bellwoods Park",
-                3.45
+                "Queen Station",
+                3
             ],
             [
                 "Osgoode Station",
-                0.72
-            ],
-            [
-                "Queen Station",
-                0.23
+                4
             ]
         ],
         "Queen Station": [
             [
-                "Trinity Bellwoods Park",
-                3.56
-            ],
-            [
-                "Osgoode Station",
-                0.8
-            ],
-            [
                 "Eaton Centre",
-                0.23
+                3
             ]
         ]
     },
@@ -88,21 +64,9 @@
         }
     },
     "node_positions": {
-        "Trinity Bellwoods Park": [
-            200.0,
-            0.0
-        ],
-        "Osgoode Station": [
-            0.0,
-            200.0
-        ],
-        "Eaton Centre": [
-            -200.0,
-            0.0
-        ],
-        "Queen Station": [
-            -0.0,
-            -200.0
+        "source": [
+            0,
+            0
         ]
     }
 }

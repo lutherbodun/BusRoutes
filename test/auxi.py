@@ -2,7 +2,7 @@ import json
 import math
 
 # Load the existing data from the JSON file
-with open('read_js.json', 'r') as file:
+with open('read_from_js.json', 'r') as file:
     data = json.load(file)
 
 graph = data["graph"]
