@@ -3,70 +3,70 @@
         "Trinity Bellwoods Park": [
             [
                 "Osgoode Station",
-                2.76
+                2764.87
             ],
             [
                 "Eaton Centre",
-                3.45
+                3446.06
             ],
             [
                 "Queen Station",
-                3.56
+                3561.18
             ]
         ],
         "Osgoode Station": [
             [
                 "Trinity Bellwoods Park",
-                2.76
+                2764.87
             ],
             [
                 "Eaton Centre",
-                0.72
+                720.69
             ],
             [
                 "Queen Station",
-                0.8
+                798.31
             ]
         ],
         "Eaton Centre": [
             [
                 "Trinity Bellwoods Park",
-                3.45
+                3446.06
             ],
             [
                 "Osgoode Station",
-                0.72
+                720.69
             ],
             [
                 "Queen Station",
-                0.23
+                234.31
             ]
         ],
         "Queen Station": [
             [
                 "Trinity Bellwoods Park",
-                3.56
+                3561.18
             ],
             [
                 "Osgoode Station",
-                0.8
+                798.31
             ],
             [
                 "Eaton Centre",
-                0.23
+                234.31
             ]
         ]
     },
     "heuristic": {
-        "Trinity Bellwoods Park": 12,
-        "Osgoode Station": 7,
-        "Eaton Centre": 3,
-        "Queen Station": 0
+        "Trinity Bellwoods Park": 2.27,
+        "Osgoode Station": 0.99,
+        "Eaton Centre": 0.5,
+        "Queen Station": 1.03
     },
     "population_density": {
-        "Trinity Bellwoods Park": 3,
-        "Osgoode Station": 5,
-        "Eaton Centre": 7,
+        "Trinity Bellwoods Park": 4,
+        "Osgoode Station": 10,
+        "Eaton Centre": 6,
         "Queen Station": 6
     },
     "coordinates": {

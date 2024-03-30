@@ -1,28 +1,44 @@
 import json
-import networkx as nx
-import matplotlib.pyplot as plt
+import random
 
-# Load the graph data from the JSON file
-with open('temp.json', 'r') as file:
-    data = json.load(file)
+# Function to generate random population density values
+def generate_random_population_density(nodes, max_density=10):
+    return {node: random.randint(1, max_density) for node in nodes}
 
-# Create a graph object
-G = nx.Graph()
+# Function to generate random heuristic values
+def generate_random_heuristics(graph, population_density, scale_factor=1):
+    heuristics = {}
+    for node in graph:
+        # Generate a random heuristic value that could represent an estimate to the goal
+        # The heuristic is inversely proportional to the population density
+        heuristics[node] = round(random.uniform(1, scale_factor) / population_density[node], 2)
+    return heuristics
 
-# Add nodes with positions
-for node, pos in data["node_positions"].items():
-    G.add_node(node, pos=pos)
+# Path to the JSON file
+file_path = 'temp.json'
 
-# Add edges from the adjacency list
-for node, edges in data["graph"].items():
-    for edge in edges:
-        G.add_edge(node, edge[0], weight=edge[1])
+# Read 'graph' from the JSON file
+try:
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+        graph = data["graph"]
+except (FileNotFoundError, KeyError) as e:
+    print(f"An error occurred while reading the file or processing the data: {e}")
+else:
+    # Generate random population density
+    population_density = generate_random_population_density(graph.keys())
 
-# Extract positions
-pos = {node: data["node_positions"][node] for node in G.nodes()}
+    # Generate random heuristic values based on the randomly generated population density
+    heuristics = generate_random_heuristics(graph, population_density, scale_factor=10)
 
-# Draw the graph
-nx.draw(G, pos, with_labels=True, node_size=700, node_color="lightblue", font_size=10, font_weight="bold")
+    # Print the random population density and heuristics
+    print("Random Population Density:")
+    print(json.dumps(population_density, indent=4))
+    print("\nRandom Heuristics:")
+    print(json.dumps(heuristics, indent=4))
 
-# Show plot
-plt.show()
+    # Optionally, save the generated data back to the JSON file
+    data["population_density"] = population_density
+    data["heuristic"] = heuristics
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
