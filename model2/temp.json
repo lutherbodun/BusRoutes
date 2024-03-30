@@ -1,0 +1,108 @@
+{
+    "graph": {
+        "Trinity Bellwoods Park": [
+            [
+                "Osgoode Station",
+                0.027648688938176073
+            ],
+            [
+                "Eaton Centre",
+                0.03446055716322358
+            ],
+            [
+                "Queen Station",
+                0.03561179579858681
+            ]
+        ],
+        "Osgoode Station": [
+            [
+                "Trinity Bellwoods Park",
+                0.027648688938176073
+            ],
+            [
+                "Eaton Centre",
+                0.007206941098688597
+            ],
+            [
+                "Queen Station",
+                0.007983107164509791
+            ]
+        ],
+        "Eaton Centre": [
+            [
+                "Trinity Bellwoods Park",
+                0.03446055716322358
+            ],
+            [
+                "Osgoode Station",
+                0.007206941098688597
+            ],
+            [
+                "Queen Station",
+                0.002343074902778817
+            ]
+        ],
+        "Queen Station": [
+            [
+                "Trinity Bellwoods Park",
+                0.03561179579858681
+            ],
+            [
+                "Osgoode Station",
+                0.007983107164509791
+            ],
+            [
+                "Eaton Centre",
+                0.002343074902778817
+            ]
+        ]
+    },
+    "heuristic": {
+        "Trinity Bellwoods Park": 12,
+        "Osgoode Station": 7,
+        "Eaton Centre": 3,
+        "Queen Station": 0
+    },
+    "population_density": {
+        "Trinity Bellwoods Park": 3,
+        "Osgoode Station": 5,
+        "Eaton Centre": 7,
+        "Queen Station": 6
+    },
+    "coordinates": {
+        "Trinity Bellwoods Park": {
+            "longitude": -79.4139,
+            "latitude": 43.6472
+        },
+        "Osgoode Station": {
+            "longitude": -79.3865,
+            "latitude": 43.6509
+        },
+        "Eaton Centre": {
+            "longitude": -79.3802,
+            "latitude": 43.6544
+        },
+        "Queen Station": {
+            "longitude": -79.3787,
+            "latitude": 43.6526
+        }
+    },
+    "node_positions": {
+        "Trinity Bellwoods Park": [
+            200.0,
+            0.0
+        ],
+        "Osgoode Station": [
+            1.2246467991473532e-14,
+            200.0
+        ],
+        "Eaton Centre": [
+            -200.0,
+            2.4492935982947064e-14
+        ],
+        "Queen Station": [
+            -3.6739403974420595e-14,
+            -200.0
+        ]
+    }
+}
