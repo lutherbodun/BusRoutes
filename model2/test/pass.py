@@ -26,7 +26,7 @@ def adjust_node_positions(node_positions):
     return {node: [round(pos[0], 2), round(pos[1], 2)] for node, pos in node_positions.items()}
 
 # Load the existing data from the JSON file
-with open('test.json', 'r') as file:
+with open('temp.json', 'r') as file:
     data = json.load(file)
 
 # Generate graph adjacency list based on coordinates
@@ -38,7 +38,7 @@ data["graph"] = graph_adj_list
 data["node_positions"] = adjust_node_positions(data["node_positions"])
 
 # Save the updated data back to the JSON file
-with open('test.json', 'w') as file:
+with open('temp.json', 'w') as file:
     json.dump(data, file, indent=4)
 
 print("Graph adjacency list and node positions updated and saved to JSON file successfully.")

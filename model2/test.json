@@ -1,0 +1,47 @@
+{
+    "graph": {},
+    "coordinates": {
+        "Transit Terminal & Chatham": {
+            "longitude": -83.043258,
+            "latitude": 42.317906
+        },
+        "Tunnel Platform & Mariners Church": {
+            "longitude": -83.042065,
+            "latitude": 42.328997
+        },
+        "Washington & Jefferson": {
+            "longitude": -83.048221,
+            "latitude": 42.327694
+        },
+        "Canada Customs & Duty Free": {
+            "longitude": -83.036532,
+            "latitude": 42.315769
+        },
+        "City Hall Square & Windsor": {
+            "longitude": -83.035526,
+            "latitude": 42.31667
+        },
+        "Goyeau & Pitt": {
+            "longitude": -83.037895,
+            "latitude": 42.319092
+        },
+        "Chatham & Glengarry": {
+            "longitude": -83.03189,
+            "latitude": 42.320143
+        },
+        "Aylmer & Assumption": {
+            "longitude": -83.029784,
+            "latitude": 42.319194
+        },
+        "Aylmer & Wyandotte": {
+            "longitude": -83.02836,
+            "latitude": 42.316997
+        },
+        "Howard & Elliott": {
+            "longitude": -83.027361,
+            "latitude": 42.314168
+        }
+    },
+    "population_density": {},
+    "heuristic": {}
+}

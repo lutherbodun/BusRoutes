@@ -11,7 +11,7 @@ with open('randy.py', 'r') as file:
     exec(file.read())
 
 # Inline JSON data as an example
-with open('test.json', 'r') as file:
+with open('temp.json', 'r') as file:
     data = json.load(file)
 
 # Replace this with reading from a file in actual implementation
