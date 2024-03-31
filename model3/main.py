@@ -1,12 +1,10 @@
 import turtle
 import json
-import auxi
 from queue import PriorityQueue
 
-# # tob extract the coordinates from csv file dbms
 with open('extract.py', 'r') as file:
     exec(file.read())
-
+    
 # to create graph from coordinates
 with open('adj.py', 'r') as file:
     exec(file.read())
@@ -34,14 +32,11 @@ population_density = data["population_density"]
 node_positions = data.get("node_positions", {})
 
 
-from queue import PriorityQueue
-
-from queue import PriorityQueue
-
 def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
     # Initialize with priority, current node, path, and cumulative population density
-    open_set.put((0, start, [start], population_density[start]))  # Start node's density is included
+    # Start node's density is included
+    open_set.put((0, start, [start], population_density[start]))
     cost_so_far = {start: 0}
     population_so_far = {start: population_density[start]}
 
@@ -49,7 +44,8 @@ def a_star_search_with_population(graph, heuristic, population_density, start, g
         _, current, path, current_population = open_set.get()
 
         if current == goal:
-            average_population_density = current_population / cost_so_far[current] if cost_so_far[current] else float('inf')
+            average_population_density = current_population / \
+                cost_so_far[current] if cost_so_far[current] else float('inf')
             return path, cost_so_far[current], average_population_density
 
         for next_node, travel_cost in graph.get(current, []):
@@ -62,8 +58,10 @@ def a_star_search_with_population(graph, heuristic, population_density, start, g
                 cost_so_far[next_node] = new_cost
                 population_so_far[next_node] = new_population
                 # Adjust priority to balance between heuristic to the goal and population/cost ratio
-                priority = new_cost + heuristic[next_node] - new_ratio * 10  # Weighted towards minimizing population/cost ratio
-                open_set.put((priority, next_node, path + [next_node], new_population))
+                # Weighted towards minimizing population/cost ratio
+                priority = new_cost + heuristic[next_node] - new_ratio * 10
+                open_set.put((priority, next_node, path +
+                             [next_node], new_population))
 
     return "Path not found", 0, 0
 
@@ -77,6 +75,8 @@ t = turtle.Turtle()
 t.speed('fast')
 
 # Function to draw nodes as circles with labels
+
+
 def draw_nodes(t, node_positions):
     for node, (x, y) in node_positions.items():
         t.penup()
@@ -96,20 +96,22 @@ def draw_edges_with_costs(t, graph, node_positions):
             # Calculate the midpoint for the cost label
             start_pos = node_positions[node]
             end_pos = node_positions[edge]
-            midpoint = ((start_pos[0] + end_pos[0]) / 2, (start_pos[1] + end_pos[1]) / 2)
-            
+            midpoint = ((start_pos[0] + end_pos[0]) / 2,
+                        (start_pos[1] + end_pos[1]) / 2)
+
             # Draw the edge
             t.penup()
             t.goto(start_pos)
             t.pendown()
             t.goto(end_pos)
-            
+
             # Draw the cost label near the midpoint in bold
             t.penup()
-            t.goto(midpoint[0], midpoint[1] - 10)  # Adjust as needed for visibility
+            # Adjust as needed for visibility
+            t.goto(midpoint[0], midpoint[1] - 10)
             t.pendown()
-            t.write(str(cost), align="center", font=("Arial", 8, "bold"))  # Font style set to bold
-
+            t.write(str(cost), align="center", font=(
+                "Arial", 8, "bold"))  # Font style set to bold
 
 
 # Main execution
@@ -128,7 +130,7 @@ path, path_cost, total_population_ratio = a_star_search_with_population(
 print("A* Path considering population to cost ratio:", path)
 print("Path Cost:", path_cost)
 # Define node positions for turtle graphics (adjusted to fit your screen and look good)
-print("Population to Cost Ratio along path:", total_population_ratio)
+print("Population to Cost Ratio along path:", -1*total_population_ratio)
 
 # # Draw the final path
 # path, path_cost, total_population = next(search_results)
