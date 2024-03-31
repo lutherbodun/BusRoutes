@@ -34,33 +34,34 @@ population_density = data["population_density"]
 node_positions = data.get("node_positions", {})
 
 
+from queue import PriorityQueue
+
 def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
-    # Priority now only for initialization, path, and cumulative population density
-    open_set.put((0, start, [start], 0))
+    open_set.put((0, start, [start], 0))  # Priority, current node, path, cumulative population density
     cost_so_far = {start: 0}
-    best_ratio_so_far = {start: 0}
+    population_so_far = {start: population_density[start]}  # Initialize with the starting node's population density
 
     while not open_set.empty():
         _, current, path, current_population = open_set.get()
 
         if current == goal:
-            return path, cost_so_far[current], current_population / cost_so_far[current]
+            return path, cost_so_far[current], current_population / cost_so_far[current] if cost_so_far[current] else float('inf')
 
         for next_node, travel_cost in graph.get(current, []):
             new_cost = cost_so_far[current] + travel_cost
             new_population = current_population + population_density[next_node]
             new_ratio = new_population / new_cost if new_cost else float('inf')
 
-            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node] or new_ratio < (population_so_far[next_node] / cost_so_far[next_node] if next_node in population_so_far else float('inf')):
                 cost_so_far[next_node] = new_cost
-                best_ratio_so_far[next_node] = new_ratio
-                priority = -new_ratio  # We negate the ratio to turn max-heap behavior into min-heap
-                open_set.put((priority, next_node, path +
-                             [next_node], new_population))
+                population_so_far[next_node] = new_population
+                priority = new_cost + heuristic[next_node] - new_ratio  # Adjusting priority calculation to consider heuristic and population density
+                open_set.put((priority, next_node, path + [next_node], new_population))
 
     return "Path not found", 0, 0
 
+# Example usage with the provided data structures...
 
 # Assuming turtle setup and draw functions are defined as before
 # Turtle setup

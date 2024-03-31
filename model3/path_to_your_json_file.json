@@ -20,28 +20,40 @@
     "graph": {
         "Transit Terminal & Chatham": [
             [
-                "Canada Customs & Duty Free",
-                0.78
+                "Tunnel Platform & Mariners Church",
+                1.24
             ],
             [
                 "Washington & Jefferson",
                 1.22
             ],
             [
-                "Tunnel Platform & Mariners Church",
-                1.24
+                "Canada Customs & Duty Free",
+                0.78
             ]
         ],
         "Tunnel Platform & Mariners Church": [
             [
                 "Washington & Jefferson",
                 0.7
+            ],
+            [
+                "Transit Terminal & Chatham",
+                1.24
             ]
         ],
         "Washington & Jefferson": [
             [
+                "Transit Terminal & Chatham",
+                1.22
+            ],
+            [
                 "Tunnel Platform & Mariners Church",
                 0.7
+            ],
+            [
+                "Canada Customs & Duty Free",
+                1.85
             ]
         ],
         "Canada Customs & Duty Free": [
@@ -54,36 +66,5 @@
                 0.78
             ]
         ]
-    },
-    "node_positions": {
-        "Transit Terminal & Chatham": [
-            200.0,
-            0.0
-        ],
-        "Tunnel Platform & Mariners Church": [
-            1.2246467991473532e-14,
-            200.0
-        ],
-        "Washington & Jefferson": [
-            -200.0,
-            2.4492935982947064e-14
-        ],
-        "Canada Customs & Duty Free": [
-            -3.6739403974420595e-14,
-            -200.0
-        ]
-    },
-    "heuristic": {
-        "Transit Terminal & Chatham": 2,
-        "Tunnel Platform & Mariners Church": 7,
-        "Washington & Jefferson": 6,
-        "Canada Customs & Duty Free": 5,
-        "goal": 0
-    },
-    "population_density": {
-        "Transit Terminal & Chatham": -5,
-        "Tunnel Platform & Mariners Church": -1,
-        "Washington & Jefferson": -2,
-        "Canada Customs & Duty Free": -1
     }
 }

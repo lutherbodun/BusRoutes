@@ -1,5 +1,6 @@
 import json
 import math
+import random
 
 # Rough conversion factor from degrees to kilometers
 DEGREE_TO_KM = 111
@@ -10,33 +11,39 @@ def euclidean_distance(coord1, coord2):
     d_lat = (coord1["latitude"] - coord2["latitude"]) * DEGREE_TO_KM
     return math.sqrt(d_lon**2 + d_lat**2)
 
-def generate_graph_adjacency_list(coordinates):
+def generate_graph_adjacency_list_with_random_connections(coordinates):
     adj_list = {}
     for node_a, coord_a in coordinates.items():
-        adj_list[node_a] = []
-        for node_b, coord_b in coordinates.items():
-            if node_a != node_b:
-                distance = euclidean_distance(coord_a, coord_b)
-                # Store the distance rounded to two decimal places
-                adj_list[node_a].append((node_b, round(distance, 2)))
+        all_possible_connections = [
+            (node_b, round(euclidean_distance(coord_a, coord_b), 2))
+            for node_b, coord_b in coordinates.items() if node_a != node_b
+        ]
+        # Determine a random number of connections for this node
+        num_connections = random.randint(1, len(all_possible_connections))
+        # Randomly select connections to add to this node
+        adj_list[node_a] = random.sample(all_possible_connections, num_connections)
     return adj_list
 
-# Assuming the JSON structure is stored in a file named 'data.json'
-json_file_path = 'read_from_js.json'
+# Assuming the coordinates are defined in your data structure
+# For demonstration purposes, let's assume you have a 'coordinates' dictionary already available
 
-# Read the existing data from the JSON file
-with open(json_file_path, 'r') as file:
+# Example coordinates for demonstration; replace with `data["coordinates"]` in your actual code
+with open('read_from_js.json', 'r') as file:
     data = json.load(file)
 
 # Generate the graph adjacency list based on coordinates
 coordinates = data["coordinates"]
-graph_adj_list = generate_graph_adjacency_list(coordinates)
 
-# Update the data with the generated graph adjacency list
-data["graph"] = graph_adj_list
+# Generate the graph adjacency list with random connections
+graph_adj_list_with_random_connections = generate_graph_adjacency_list_with_random_connections(coordinates)
+
+# Here you would follow with the JSON reading and writing logic as before
+# Update your 'data' structure accordingly
+data["graph"] = graph_adj_list_with_random_connections
 
 # Write the updated data back to the JSON file
+json_file_path = 'read_from_js.json'
 with open(json_file_path, 'w') as file:
     json.dump(data, file, indent=4)
 
-print("Graph adjacency list generated and written back to the JSON file.")
+print("Graph adjacency list with random connections generated and written back to the JSON file.")
