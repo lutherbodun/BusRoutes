@@ -15,7 +15,7 @@ def generate_random_heuristics(graph, population_density, scale_factor=1):
     return heuristics
 
 # Path to the JSON file
-file_path = 'test.json'
+file_path = 'temp.json'
 
 # Read 'graph' from the JSON file
 try:
