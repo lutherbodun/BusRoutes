@@ -58,15 +58,15 @@
         ]
     },
     "heuristic": {
-        "Trinity Bellwoods Park": 6.74,
-        "Osgoode Station": 4.39,
-        "Eaton Centre": 6.76,
-        "Queen Station": 5.78
+        "Trinity Bellwoods Park": 9.84,
+        "Osgoode Station": 8.95,
+        "Eaton Centre": 9.23,
+        "Queen Station": 1.2
     },
     "population_density": {
-        "Trinity Bellwoods Park": -10,
-        "Osgoode Station": -6,
-        "Eaton Centre": -9,
+        "Trinity Bellwoods Park": -1,
+        "Osgoode Station": -1,
+        "Eaton Centre": -6,
         "Queen Station": -3
     },
     "coordinates": {
@@ -89,20 +89,20 @@
     },
     "node_positions": {
         "Trinity Bellwoods Park": [
-            0,
-            400
+            200.0,
+            0.0
         ],
         "Osgoode Station": [
-            467,
-            194
+            0.0,
+            200.0
         ],
         "Eaton Centre": [
-            574,
-            0
+            -200.0,
+            0.0
         ],
         "Queen Station": [
-            600,
-            100
+            -0.0,
+            -200.0
         ]
     }
 }

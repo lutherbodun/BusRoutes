@@ -1,5 +1,4 @@
 {
-    "graph": {},
     "coordinates": {
         "Transit Terminal & Chatham": {
             "longitude": -83.043258,
@@ -41,7 +40,5 @@
             "longitude": -83.027361,
             "latitude": 42.314168
         }
-    },
-    "population_density": {},
-    "heuristic": {}
+    }
 }

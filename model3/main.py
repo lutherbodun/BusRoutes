@@ -3,13 +3,26 @@ import json
 import auxi
 from queue import PriorityQueue
 
+# # tob extract the coordinates from csv file dbms
+with open('extract.py', 'r') as file:
+    exec(file.read())
 
+# to create graph from coordinates
+with open('adj.py', 'r') as file:
+    exec(file.read())
+
+# to create node pos for UI
+with open('pass.py', 'r') as file:
+    exec(file.read())
+
+# to create heuristics and population data
 with open('auxi.py', 'r') as file:
     exec(file.read())
 
 # Inline JSON data as an example
 with open('read_from_js.json', 'r') as file:
     data = json.load(file)
+
 
 # Replace this with reading from a file in actual implementation
 # with open('read_from_js.json', 'r') as file:
@@ -99,11 +112,11 @@ draw_edges_with_costs(t, data['graph'], node_positions)
 
 # Perform A* search
 search_results = a_star_search_with_population(
-    data['graph'], data['heuristic'], data['population_density'], 'source', 'goal')
+    data['graph'], data['heuristic'], data['population_density'], 'Transit Terminal & Chatham', 'Canada Customs & Duty Free')
 
 # Execute the modified A* search
 path, path_cost, total_population_ratio = a_star_search_with_population(
-    graph, heuristic, population_density, 'source', 'goal')
+    graph, heuristic, population_density, 'Transit Terminal & Chatham', 'Canada Customs & Duty Free')
 print("A* Path considering population to cost ratio:", path)
 print("Path Cost:", path_cost)
 # Define node positions for turtle graphics (adjusted to fit your screen and look good)

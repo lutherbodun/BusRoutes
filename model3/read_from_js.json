@@ -1,135 +1,109 @@
 {
-    "graph": {
-        "source": [
-            [
-                "Antarctica",
-                2
-            ],
-            [
-                "Bahrain",
-                3
-            ]
-        ],
-        "Antarctica": [
-            [
-                "Delhi",
-                4
-            ]
-        ],
-        "Chennai": [
-            [
-                "source",
-                1
-            ],
-            [
-                "Ecuador",
-                1
-            ]
-        ],
-        "Delhi": [
-            [
-                "goal",
-                7
-            ]
-        ],
-        "Bahrain": [
-            [
-                "Delhi",
-                5
-            ],
-            [
-                "Ecuador",
-                1
-            ]
-        ],
-        "Ecuador": [
-            [
-                "Delhi",
-                3
-            ],
-            [
-                "goal",
-                4
-            ]
-        ],
-        "goal": []
-    },
-    "heuristic": {
-        "source": 10,
-        "Antarctica": 8,
-        "Bahrain": 6,
-        "Chennai": 5,
-        "Delhi": 7,
-        "Ecuador": 4,
-        "goal": 0
-    },
-    "population_density": {
-        "source": 1,
-        "Antarctica": 2,
-        "Bahrain": 1,
-        "Chennai": 5,
-        "Delhi": 3,
-        "Ecuador": 2,
-        "goal": 2
-    },
     "coordinates": {
-        "source": {
-            "longitude": -75.343,
-            "latitude": 39.984
+        "Transit Terminal & Chatham": {
+            "longitude": -83.043258,
+            "latitude": 42.317906
         },
-        "Antarctica": {
-            "longitude": -75.543,
-            "latitude": 39.123
+        "Tunnel Platform & Mariners Church": {
+            "longitude": -83.042065,
+            "latitude": 42.328997
         },
-        "Bahrain": {
-            "longitude": -75.234,
-            "latitude": 40.123
+        "Washington & Jefferson": {
+            "longitude": -83.048221,
+            "latitude": 42.327694
         },
-        "Chennai": {
-            "longitude": -75.875,
-            "latitude": 38.987
-        },
-        "Delhi": {
-            "longitude": -75.564,
-            "latitude": 39.345
-        },
-        "Ecuador": {
-            "longitude": -75.432,
-            "latitude": 39.876
-        },
-        "goal": {
-            "longitude": -75.678,
-            "latitude": 40.456
+        "Canada Customs & Duty Free": {
+            "longitude": -83.036532,
+            "latitude": 42.315769
         }
     },
+    "graph": {
+        "Transit Terminal & Chatham": [
+            [
+                "Tunnel Platform & Mariners Church",
+                1.24
+            ],
+            [
+                "Washington & Jefferson",
+                1.22
+            ],
+            [
+                "Canada Customs & Duty Free",
+                0.78
+            ]
+        ],
+        "Tunnel Platform & Mariners Church": [
+            [
+                "Transit Terminal & Chatham",
+                1.24
+            ],
+            [
+                "Washington & Jefferson",
+                0.7
+            ],
+            [
+                "Canada Customs & Duty Free",
+                1.59
+            ]
+        ],
+        "Washington & Jefferson": [
+            [
+                "Transit Terminal & Chatham",
+                1.22
+            ],
+            [
+                "Tunnel Platform & Mariners Church",
+                0.7
+            ],
+            [
+                "Canada Customs & Duty Free",
+                1.85
+            ]
+        ],
+        "Canada Customs & Duty Free": [
+            [
+                "Transit Terminal & Chatham",
+                0.78
+            ],
+            [
+                "Tunnel Platform & Mariners Church",
+                1.59
+            ],
+            [
+                "Washington & Jefferson",
+                1.85
+            ]
+        ]
+    },
     "node_positions": {
-        "source": [
+        "Transit Terminal & Chatham": [
             200.0,
             0.0
         ],
-        "Antarctica": [
-            124.69796037174672,
-            156.36629649360597
+        "Tunnel Platform & Mariners Church": [
+            1.2246467991473532e-14,
+            200.0
         ],
-        "Chennai": [
-            -44.50418679126287,
-            194.98558243636472
+        "Washington & Jefferson": [
+            -200.0,
+            2.4492935982947064e-14
         ],
-        "Delhi": [
-            -180.19377358048382,
-            86.77674782351164
-        ],
-        "Bahrain": [
-            -180.19377358048382,
-            -86.7767478235116
-        ],
-        "Ecuador": [
-            -44.50418679126274,
-            -194.98558243636475
-        ],
-        "goal": [
-            124.69796037174667,
-            -156.36629649360597
+        "Canada Customs & Duty Free": [
+            -3.6739403974420595e-14,
+            -200.0
         ]
+    },
+    "heuristic": {
+        "Transit Terminal & Chatham": 3,
+        "Tunnel Platform & Mariners Church": 2,
+        "Washington & Jefferson": 7,
+        "Canada Customs & Duty Free": 5,
+        "goal": 0
+    },
+    "population_density": {
+        "Transit Terminal & Chatham": -2,
+        "Tunnel Platform & Mariners Church": -4,
+        "Washington & Jefferson": -4,
+        "Canada Customs & Duty Free": -2
     }
 }
