@@ -36,30 +36,37 @@ node_positions = data.get("node_positions", {})
 
 from queue import PriorityQueue
 
+from queue import PriorityQueue
+
 def a_star_search_with_population(graph, heuristic, population_density, start, goal):
     open_set = PriorityQueue()
-    open_set.put((0, start, [start], 0))  # Priority, current node, path, cumulative population density
+    # Initialize with priority, current node, path, and cumulative population density
+    open_set.put((0, start, [start], population_density[start]))  # Start node's density is included
     cost_so_far = {start: 0}
-    population_so_far = {start: population_density[start]}  # Initialize with the starting node's population density
+    population_so_far = {start: population_density[start]}
 
     while not open_set.empty():
         _, current, path, current_population = open_set.get()
 
         if current == goal:
-            return path, cost_so_far[current], current_population / cost_so_far[current] if cost_so_far[current] else float('inf')
+            average_population_density = current_population / cost_so_far[current] if cost_so_far[current] else float('inf')
+            return path, cost_so_far[current], average_population_density
 
         for next_node, travel_cost in graph.get(current, []):
             new_cost = cost_so_far[current] + travel_cost
             new_population = current_population + population_density[next_node]
             new_ratio = new_population / new_cost if new_cost else float('inf')
 
-            if next_node not in cost_so_far or new_cost < cost_so_far[next_node] or new_ratio < (population_so_far[next_node] / cost_so_far[next_node] if next_node in population_so_far else float('inf')):
+            # Ensure to update or explore the node if it offers a better ratio or hasn't been explored
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node] or new_ratio < (population_so_far.get(next_node, float('inf')) / new_cost):
                 cost_so_far[next_node] = new_cost
                 population_so_far[next_node] = new_population
-                priority = new_cost + heuristic[next_node] - new_ratio  # Adjusting priority calculation to consider heuristic and population density
+                # Adjust priority to balance between heuristic to the goal and population/cost ratio
+                priority = new_cost + heuristic[next_node] - new_ratio * 10  # Weighted towards minimizing population/cost ratio
                 open_set.put((priority, next_node, path + [next_node], new_population))
 
     return "Path not found", 0, 0
+
 
 # Example usage with the provided data structures...
 

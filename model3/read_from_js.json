@@ -26,32 +26,44 @@
             [
                 "Washington & Jefferson",
                 1.22
-            ],
-            [
-                "Tunnel Platform & Mariners Church",
-                1.24
             ]
         ],
         "Tunnel Platform & Mariners Church": [
             [
+                "Transit Terminal & Chatham",
+                1.24
+            ],
+            [
                 "Washington & Jefferson",
                 0.7
+            ],
+            [
+                "Canada Customs & Duty Free",
+                1.59
             ]
         ],
         "Washington & Jefferson": [
             [
+                "Canada Customs & Duty Free",
+                1.85
+            ],
+            [
                 "Tunnel Platform & Mariners Church",
                 0.7
+            ],
+            [
+                "Transit Terminal & Chatham",
+                1.22
             ]
         ],
         "Canada Customs & Duty Free": [
             [
-                "Tunnel Platform & Mariners Church",
-                1.59
-            ],
-            [
                 "Transit Terminal & Chatham",
                 0.78
+            ],
+            [
+                "Tunnel Platform & Mariners Church",
+                1.59
             ]
         ]
     },
@@ -74,16 +86,16 @@
         ]
     },
     "heuristic": {
-        "Transit Terminal & Chatham": 2,
-        "Tunnel Platform & Mariners Church": 7,
-        "Washington & Jefferson": 6,
-        "Canada Customs & Duty Free": 5,
+        "Transit Terminal & Chatham": 3,
+        "Tunnel Platform & Mariners Church": 10,
+        "Washington & Jefferson": 3,
+        "Canada Customs & Duty Free": 9,
         "goal": 0
     },
     "population_density": {
         "Transit Terminal & Chatham": -5,
-        "Tunnel Platform & Mariners Church": -1,
+        "Tunnel Platform & Mariners Church": -2,
         "Washington & Jefferson": -2,
-        "Canada Customs & Duty Free": -1
+        "Canada Customs & Duty Free": -3
     }
 }
