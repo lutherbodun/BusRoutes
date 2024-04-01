@@ -19,6 +19,7 @@ The heuristics and population are generated using the auxi.py program and assign
 Step 5:
 The entire set of graph, node positions, heuristics, and population data is read from the read_from_js.json file and the A* algorithm is implemented on the set. The simulation of the optimal path is output to the screen based on specific source-destination data.
 
+![image](https://github.com/lutherbodun/BusRoutes/assets/112750375/64e60ea0-4b85-4155-9086-cc01b9e16324)
 
 According to the algorithm, the population-to-path cost ratio of each node is calculated at each level of the graph, and the minimum value at each level is added to the optimal path throughout its traversal. The population data is negated initially as the minimum population-to-path cost ratio is taken into account since the algorithm is built on the generic a-star search algorithm where the minimum value should be tracked at every level of the graph and the higher population is taken into consideration at the same time because the purpose of the algorithm is to serve more people with lower path cost at the same time. 
 
